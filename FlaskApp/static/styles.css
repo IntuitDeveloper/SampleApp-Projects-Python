@@ -1,0 +1,120 @@
+input[name='qbo_connect']    { 
+        
+    color: white; background-color: green; font-size:xx-large; 
+}
+label {
+
+    display: block;
+    font-family: 'Helvetica'
+
+}
+input {
+    margin-bottom: 20px;
+}
+/*
+input[name='asana_connect']{
+    background-color: white; color: red; font-size: xx-large;
+} */
+body {
+   /* display: flex; */
+    justify-content: center;
+     margin: 0;
+     padding: 0;
+    align-items: center;
+    background-color: #f4f4f4; /* Soft light gray background */
+    min-height: 100vh;
+    font-family: 'Helvetica'
+}
+
+form div p {
+    font-size: 16px;
+    color: #555; /* Lighter text color */
+    margin: 0;
+    font-family: 'Helvetica'
+}
+
+form {
+    background-color: #fff; /* White background for the form */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 100%;
+    max-width: 500px; /* Limit form width */
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; 
+    font-family: 'Helvetica'
+}
+
+form div {
+display: flex;
+align-items: center; /* Vertically center the label and select */
+justify-content: flex-start;
+gap: 10px; /* Space between the label and dropdown */
+display: flex;
+flex-direction: column; /* Stack the child elements vertically */
+gap: 15px; /* Add space between label and input */
+width: 100%; /* Full width */
+font-family: 'Helvetica'
+}
+/*
+ div { 
+    
+    color: black;  font-size:large; 
+    font-family: 'Helvetica';
+    max-height: 200px; /* Adjust based on the desired height 
+}
+*/ 
+input[name='qbo_project']  { 
+    
+    color: white; background-color: rgb(21, 97, 173); font-size:xx-large; 
+}
+
+.submit-btn {
+/* Blue border around the button */
+    padding: 0; /* Space around the image inside the button */
+    background: none;
+    cursor: pointer;
+    display: inline-block; 
+    border-radius: 6px;
+}
+
+.submit-btn img {
+    display: block; /* Remove extra space below the image */
+    max-width: 100%; /* Ensure image doesn't overflow */
+}
+
+.proj-btn  { 
+    border-radius: 6px;
+    color: white; background-color: rgb(139, 0, 0); font-size:xx-large; 
+}
+
+label[name='qbo_selectcust']    { 
+    font-family: 'Helvetica';
+    height: 40px; /* Adjust dropdown height */
+    width: 200px; /* Adjust width */
+    line-height: 40px; /* Vertically center the text */
+    text-align: center; /* Horizontally center the text */
+    padding: 0; /* Remove extra padding */
+    border: 3px solid white;
+    color: RGB(139, 0, 0); background-color: white; font-size:x-large; 
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+select {
+    font-family: 'Helvetica', sans-serif;
+    font-size: medium;
+    width: 100%; /* Full width for the dropdown */
+    height: 40px; /* Set a fixed height */
+    padding: 8px 10px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    max-height: 150px; /* Limit the height of the dropdown to avoid overflow */
+    overflow-y: auto;
+    
+}

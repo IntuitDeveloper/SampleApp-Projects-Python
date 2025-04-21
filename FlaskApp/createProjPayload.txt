@@ -1,0 +1,42 @@
+
+{
+  "query": "mutation ProjectManagementCreateProject($name: String!, $description: String, $startDate: DateTime, $dueDate: DateTime!, $status: ProjectManagement_Status, $customer: ProjectManagement_CustomerInput, $priority: Int, $pinned: Boolean, $completionRate: Decimal, $emailAddress: [Qb_EmailAddressInput], $addresses: [Qb_PostalAddressInput]) { projectManagementCreateProject(input:{ name: $name, description: $description, startDate: $startDate, dueDate: $dueDate, status: $status, customer: $customer, priority: $priority, pinned: $pinned, completionRate: $completionRate, emailAddress: $emailAddress, addresses: $addresses }) { ... on ProjectManagement_Project { id, name, description, startDate, dueDate, status, priority, customer{ id }, priority, pinned, completionRate, emailAddress { email, name } addresses { streetAddressLine1, streetAddressLine2, streetAddressLine3, state, postalCode } } } }",
+  "variables": {
+    "name": "Demo Project App",
+    "description": "Test Demo Project for App",
+    "startDate": "2024-07-05T00:00:00.000Z",
+    "dueDate": "2024-07-31T00:00:00.000Z",
+    "status": "OPEN",
+    "customer": {
+      "id": 1
+    },
+    "priority": 1,
+    "pinned": false,
+    "completionRate": 99,
+    "emailAddress": [
+      {
+        "email": "testproject@gmail.com",
+        "name": "Demo Client",
+        "variation": {
+          "purpose": "BILLING",
+          "usage": "HOME",
+          "Common_Ordinal": "PRIMARY"
+        }
+      }
+    ],
+    "addresses": [
+      {
+        "streetAddressLine1": "3000 17th street",
+        "postalCode": "94114",
+        "city": "San Francisco",
+        "state": "California",
+        "country": "USA",
+        "variation": {
+          "purpose": "BILLING",
+          "usage": "HOME",
+          "Common_Ordinal": "PRIMARY"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QBO Integration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" >
+</head>
+<body>
+
+    <form action='/qbo-login' method="GET">
+        <div>
+        <p><strong>1 </strong></p>
+        <label>
+            <button type="submit" class="submit-btn">
+                <img src="{{ url_for('static', filename='images/logo_1x.png') }}" alt="Logo" class="logo-img"/>
+        </button> 
+        </label>
+       </div>
+ 
+    </form>
+    <form action='/call-qbo' method="GET">
+        <div>
+            <p><strong>2 </strong></p>
+            <label>
+                <input type='submit' name="qbo_project" value="Get Customers">
+            </label>
+        </div>
+    </form>
+
+    <div>
+    <form action='/create-projects' method="POST">
+        <div>
+        <p><strong>3</strong></p>  
+        <label name="qbo_selectcust" for="selection">Select Customer</label>
+        <select name=customers id="selection">
+            {% for c in customers %}
+                <option value="{{c}}">{{ c }}</option>
+            {% endfor %}
+        </select> 
+        <button type="submit" class="proj-btn">Create Project</button> 
+    </div>
+    </form>
+    {% if project %}
+    <div style="margin-top: 20px; padding: 10px">
+        <h3>Project created ✅ </h3>
+        <p><strong>Project ID:</strong>{{ project.id }}</p>
+        <p><strong>Name:</strong> {{ project.name }}</p>
+    </div>
+     {% endif %}
+</div>
+</body>
+</html>
