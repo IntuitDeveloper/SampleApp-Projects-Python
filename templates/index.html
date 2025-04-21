@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBooks Projects Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="step-container">
+            <h2>QuickBooks Projects Demo</h2>
+            
+            <div class="step">
+                <h3>Step 1: Connect to QuickBooks</h3>
+                <form action='/qbo-login' method="GET">
+                    <button type="submit" class="submit-btn">
+                        <img src="{{ url_for('static', filename='images/logo_1x.png') }}" alt="QuickBooks Logo" class="logo-img"/>
+                    </button>
+                </form>
+            </div>
+
+            <div class="step">
+                <h3>Step 2: Get Customers</h3>
+                <form action='/call-qbo' method="GET">
+                    <button type="submit" class="action-btn">Fetch Customers</button>
+                </form>
+            </div>
+
+            <div class="step">
+                <h3>Step 3: Create Project</h3>
+                <form action='/create-projects' method="POST">
+                    <div class="form-group">
+                        <label for="customer-select">Select Customer</label>
+                        <select name="customers" id="customer-select" required>
+                            <option value="">-- Select a customer --</option>
+                            {% for c in customers %}
+                                <option value="{{c}}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="action-btn">Create Project</button>
+                </form>
+            </div>
+
+            {% if project %}
+            <div class="project-details">
+                <h3>Project Created Successfully</h3>
+                <div class="project-info">
+                    <p><strong>Project ID:</strong> {{ project.id }}</p>
+                    <p><strong>Name:</strong> {{ project.name }}</p>
+                    <p><strong>Status:</strong> {{ project.status }}</p>
+                    <p><strong>Due Date:</strong> {{ project.dueDate }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
