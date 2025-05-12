@@ -2,14 +2,6 @@ hook_secret = None
 import version
 import platform
 OAUTH2_PROVIDERS = {
-    'asana': {
-        'client_id': '1207748466259067',
-        'client_secret': 'e558cdb75fc66b0e7cb7536fb4c347e4',
-        'authorize_url': 'https://app.asana.com/-/oauth_authorize',
-        'token_url': 'https://app.asana.com/-/oauth_token',
-        'redirect_uri':'http://localhost:5001/callback/asana',
-        'oauth2_token':'None'
-    },
     'quickbooks': {
         'client_id' : 'ABNqSMYyurXwhGpB21K9pcbFvxtlbZ356QKmn2LYjqsXeiIO2v',
         'client_secret' : 'QgXeKbzMgHg4wVLqGgpHdFXqpQUGPvDyJ0Pw3O14',
@@ -19,17 +11,7 @@ OAUTH2_PROVIDERS = {
 
 ENVIRONMENT = 'production'
 
-# gid of tasks & fields in Asana
-ASANA_GID = {
-    'invoice' : '1207746538402679',
-    'item' : '1207748437685985'
-}
-
-
 WEBHOOK_URL = 'https://8fd5-174-127-245-175.ngrok-free.app'
-
-ASANA_PTOKEN = '2/1207746425168472/1207748354223553:d9f95607af721d5a8cf8832fb4571f95'
-
 
 MIGRATION_URL = {
     'sandbox': 'https://developer-sandbox.api.intuit.com/v2/oauth2/tokens/migrate',
