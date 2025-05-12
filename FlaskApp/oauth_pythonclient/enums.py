@@ -1,4 +1,3 @@
-
 """This module contains Enum values used by this library
 """
 
@@ -13,10 +12,10 @@ class Scopes(Enum):
     PHONE = 'phone'
     ADDRESS = 'address'
     OPENID = 'openid'
-    ACCOUNTING = 'com.intuit.quickbooks.accounting'
+    ACCOUNTING = "com.intuit.quickbooks.accounting"
     PAYMENT = 'com.intuit.quickbooks.payment'
-    PROJECT = 'project-management.project'
-    CUSTOM_FIELDS = 'app-foundations.custom-field-definitions'
+    PROJECT = "project-management.project"
+    CUSTOM_FIELDS = "com.intuit.quickbooks.customfields"
     # for whitelisted Beta apps only
     PAYROLL = 'com.intuit.quickbooks.payroll'
     PAYROLL_TIMETRACKING = 'com.intuit.quickbooks.payroll.timetracking'

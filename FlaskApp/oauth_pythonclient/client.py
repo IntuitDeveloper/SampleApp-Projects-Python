@@ -1,16 +1,16 @@
- # Copyright (c) 2018 Intuit
- #
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- #  http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- # limitations under the License.
+# Copyright (c) 2018 Intuit
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import json
 import requests
@@ -20,7 +20,7 @@ try:
 except (ModuleNotFoundError, ImportError):
   from future.moves.urllib.parse import urlencode
 
-from utils import (
+from .utils import (
     get_discovery_doc,
     generate_token,
     scopes_to_string,
@@ -130,7 +130,16 @@ class AuthClient(requests.Session):
             'redirect_uri': self.redirect_uri
         }
 
-        send_request('POST', self.token_endpoint, headers, self, body=urlencode(body), session=self)
+        response = send_request('POST', self.token_endpoint, headers, self, body=urlencode(body), session=self)
+        response_data = response.json()
+        
+        # Set the token data on the client object
+        self.access_token = response_data.get('access_token')
+        self.refresh_token = response_data.get('refresh_token')
+        self.expires_in = response_data.get('expires_in')
+        self.x_refresh_token_expires_in = response_data.get('x_refresh_token_expires_in')
+        
+        return response
 
     def refresh(self, refresh_token=None):
         """Gets fresh access_token and refresh_token

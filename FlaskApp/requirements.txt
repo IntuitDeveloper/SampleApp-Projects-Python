@@ -1,4 +1,9 @@
-requests>=2.21.0
+flask==2.0.1
+requests==2.26.0
+gql==3.0.0
+pyjwt==2.4.0
+python-graphql-client==0.4.3
+python-dotenv==0.19.0
 Flask
 urllib3 >= 1.15.1
 intuit-oauth==1.2.4
@@ -11,4 +16,5 @@ jwt
 graphql-query
 python_graphql_client
 gql[all]
+python-quickbooks
 
