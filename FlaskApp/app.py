@@ -1,9 +1,8 @@
 from flask import Flask, render_template, redirect, request, session, abort, make_response, flash
 import hmac, json, hashlib, requests, secrets, uuid, datetime
 import config
-from oauth_pythonclient.client import AuthClient
-#from intuitlib.enums import Scopes
-from oauth_pythonclient.enums import Scopes
+from intuitlib.client import AuthClient
+from intuitlib.enums import Scopes
 from quickbooks import QuickBooks
 from quickbooks.objects.customer import Customer
 #from asana.rest import ApiException
@@ -13,6 +12,8 @@ from quickbooks.objects.item import Item
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 import logging
+from graphql_service import prepare_variables
+from quickbooks_service import QuickBooksService
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -22,16 +23,19 @@ app = Flask(__name__)
 app.secret_key = "dev key"  # In production, use a secure secret key
 
 qbo_auth = config.OAUTH2_PROVIDERS['quickbooks']
-#setup and call QBO authorization
-auth_client = AuthClient (
-                            environment=config.ENVIRONMENT,
-                            client_id=qbo_auth['client_id'], 
-                            client_secret =qbo_auth['client_secret'],
-                            redirect_uri = qbo_auth['redirect_uri']
-
+# Setup and call QBO authorization
+auth_client = AuthClient(
+    client_id=qbo_auth['client_id'],
+    client_secret=qbo_auth['client_secret'],
+    environment=config.ENVIRONMENT,
+    redirect_uri=qbo_auth['redirect_uri']
 )
 
-scopes =  [Scopes.ACCOUNTING , Scopes.PROJECT ]
+# Define the scopes
+scopes = [
+    Scopes.ACCOUNTING,
+    Scopes.PROJECT_MANAGEMENT
+]
 
 auth_url = auth_client.get_authorization_url(scopes)
 
@@ -75,36 +79,19 @@ custDict = {}
 @app.route("/call-qbo",methods=['GET','POST'])
 def callQbo():
     try:
-        base_url = 'https://quickbooks.api.intuit.com'  
-        cust_url = '{0}/v3/company/{1}/query'.format(base_url, session['realm_id'])
-        body = "Select * from Customer where Job = false "
-        headers = {
-                    'Authorization': session['auth_header'],
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/text'
-             }
-        cust_response = requests.request("POST",cust_url, headers=headers, data=body)   
-        #print(cust_response.text)
-        data = json.loads(cust_response.text)
-        print(data)
-        custData = data['QueryResponse']['Customer']
-        print(custData)
-
+        qbo_service = QuickBooksService(
+            auth_header=session['auth_header'],
+            realm_id=session['realm_id']
+        )
+        
         global custDict
-        custDict = {}
-        for customer in custData:
-            if 'Id' in customer:
-                custDict[customer['Id']] = customer['FullyQualifiedName']
-        custName = list(custDict.values())
-        print(custName)
+        custDict = qbo_service.get_customers()
+        custName = qbo_service.get_customer_names()
+        
         return render_template('index.html', customers=custName)
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching customers: {str(e)}")
-        flash('Error fetching customers. Please try again.')
-        return redirect('/')
     except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        flash('An unexpected error occurred. Please try again.')
+        logger.error(f"Error in callQbo: {str(e)}")
+        flash('Error fetching customers. Please try again.')
         return redirect('/')
 
 @app.route("/create-projects",methods=['GET','POST'])
@@ -134,21 +121,8 @@ def getProjects():
         with open('static/graphql/project.graphql', 'r') as f:
             query = gql(f.read())
         
-        now = datetime.datetime.now(datetime.timezone.utc)
-        formatted_date = now.strftime('%Y-%m-%dT%H:%M:%S.') + f"{now.microsecond // 1000:03d}Z"
-        future_date = now + datetime.timedelta(days=1825)
-        format_future_date = future_date.strftime('%Y-%m-%dT%H:%M:%S.') + f"{future_date.microsecond // 1000:03d}Z"
-        
-        variables = {
-            "name": f"Project-{uuid.uuid4()}",
-            "description": f"Project for {selected_custName}",
-            "startDate": formatted_date,
-            "dueDate": format_future_date,
-            "status": "OPEN",
-            "customer": {"id": int(custID)},
-            "priority": 1,
-            "pinned": False
-        }
+        # Prepare variables using the service
+        variables = prepare_variables(selected_custName, custID)
         
         result = client.execute(query, variable_values=variables)
         projects = result.get('projectManagementCreateProject', {})
@@ -179,18 +153,3 @@ def home():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
 
-        
-    """  
-    with open('createProjPayload.txt', 'r') as f:
-        payload = json.load(f)
-    json_payload = json.dumps(payload)
-    print(json_payload)
-    graph_headers =   headers = {
-                    'Authorization': auth_header,
-                    'Accept': 'application/json',
-                     'Content-Type': 'application/json'
-             }
-    proj_resp = requests.post(graphql_url , headers=graph_headers, data=json_payload)
-    print("**Created Project**")
-    print(json.loads(proj_resp.text)) 
-    """

@@ -1,0 +1,14 @@
+{
+    "template": {
+        "name": "Project-{uuid}",
+        "description": "Project for {customerName}",
+        "status": "OPEN",
+        "priority": 1,
+        "pinned": false
+    },
+    "defaults": {
+        "status": "OPEN",
+        "priority": 1,
+        "pinned": false
+    }
+} 
