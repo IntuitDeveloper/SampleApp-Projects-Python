@@ -6,8 +6,6 @@ This is a sample Python application that demonstrates how to integrate with Quic
 
 - OAuth 2.0 authentication with QuickBooks
 - Project Management API integration
-- Customer data retrieval
-- Project creation with customer association
 
 ## Prerequisites
 
