@@ -18,8 +18,8 @@ This is a sample Python application that demonstrates how to integrate with Quic
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/IntuitDeveloper/Sample-app-projects-python.git
-cd Sample-app-projects-python
+git clone git@github.com:IntuitDeveloper/SampleApp-Projects-Python.git
+
 ```
 
 2. Install dependencies:
